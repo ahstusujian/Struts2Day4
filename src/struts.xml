@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <package name="demo1" namespace="/" extends="struts-default">
+        <!--第一种拦截器的配置方式:注册拦截器对象
+        <interceptors>
+            <interceptor name="demo1Interceptor" class="demo1.Demo1Interceptor"/>
+        </interceptors>-->
+        <!--拦截器能拦截Action,引用了自定义的拦截器,那么默认栈的拦截器就不执行了,一定把默认的拦截器也引入
+        <action name="demo1Action" method="execute" class="demo1.Demo1Action">
+            <interceptor-ref name="demo1Interceptor"/>
+            <interceptor-ref name="defaultStack"/>
+        </action>-->
+        <!--第二种配置的方法:注册拦截器,配置拦截器的栈,在Action中引入自定义的拦截器-->
+        <interceptors>
+            <interceptor name="demo1Interceptor" class="demo1.Demo1Interceptor"/>
+            <!--自定义拦截器栈-->
+            <interceptor-stack name="myStack">
+                <interceptor-ref name="demo1Interceptor"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <action name="demo1Action" class="demo1.Demo1Action" method="execute">
+            <!--在Action引入自定义的拦截器栈-->
+            <interceptor-ref name="myStack"/>
+        </action>
+    </package>
+</struts>
